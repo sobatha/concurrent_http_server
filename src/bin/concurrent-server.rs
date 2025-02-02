@@ -5,6 +5,9 @@ use std::{
     time::Duration,
 };
 
+// test with: 
+// curl http://127.0.0.1:7878 -w "\nTotal time: %{time_total} seconds\n" 
+
 fn main() {
     let listener = TcpListener::bind("127.0.0.1:7878").unwrap();
 
@@ -20,10 +23,8 @@ fn main() {
         reader.read_line(&mut request_line).unwrap();
         println!("Received request: {}", request_line.trim_end());
 
-        // Prepare the response body
         let body = "Hello";
 
-        // Build a proper HTTP response with headers and body.
         let response = format!(
             "HTTP/1.1 200 OK\r\nContent-Length: {}\r\nContent-Type: text/plain\r\n\r\n{}",
             body.len(),
