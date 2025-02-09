@@ -51,7 +51,8 @@ impl Worker {
     fn new(id: usize, receiver: Arc<Mutex<Receiver<Job>>>) -> Worker {
         let thread = thread::spawn(move || loop {
             // blocking thread and wait data arrival
-            match receiver.lock().unwrap().recv() {
+            let lock = receiver.lock().unwrap().recv();
+            match lock {
                 Ok(job) => {
                     println!("Worker {}: executing job...", id);
                     job();
